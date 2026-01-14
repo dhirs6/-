@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src * data: gap: content: https://ssl.gstatic.com;
+                 style-src * 'unsafe-inline';
+                 script-src * 'unsafe-inline' 'unsafe-eval'">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1,
+                 minimum-scale=1, user-scalable=no, viewport-fit=cover">
+
+  <meta name="theme-color" content="#fff">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="msapplication-tap-highlight" content="no">
+  <title>My App</title>
+
+  <link rel="stylesheet" href="framework7/framework7-bundle.min.css">
+  <link rel="stylesheet" href="css/icons.css">
+  <link rel="stylesheet" href="css/app.css">
+
+  <!-- ゲーム用CSS（軽量） -->
+  <style>
+    #game {
+      display: block;
+      margin: 16px auto;
+      background: #87ceeb;
+    }
+  </style>
+</head>
+
+<body>
+<div id="app">
+  <div class="view view-main view-init safe-areas">
+    <div class="page" data-name="home">
+
+      <!-- Navbar -->
+      <div class="navbar navbar-large">
+        <div class="navbar-bg"></div>
+        <div class="navbar-inner sliding">
+          <div class="title">My App</div>
+          <div class="title-large">
+            <div class="title-large-text">My App</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="toolbar toolbar-bottom">
+        <div class="toolbar-inner">
+          <a href="#" class="link">Left Link</a>
+          <a href="#" class="link">Right Link</a>
+        </div>
+      </div>
+
+      <!-- Page content -->
+      <div class="page-content">
+        <div class="block block-strong">
+          <p>Simple Game</p>
+        </div>
+
+        <!-- ★ ここにゲームを追加 -->
+        <canvas id="game" width="360" height="480"></canvas>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 既存JS（消さない） -->
+<script src="components/loader.js"></script>
+<script src="framework7/framework7-bundle.min.js"></script>
+<script src="js/cordova-app.js"></script>
+<script src="js/routes.js"></script>
+<script src="js/store.js"></script>
+<script src="js/app.js"></script>
+<!-- 入力用スクリプト -->
+<script src="js/speech.js"></script>
+<script src="js/camera.js"></script>
+<script src="js/gamepad.js"></script>
+<script src="js/gyro.js"></script>
+
+
+<!-- ★ ゲーム用JSを最後に追加 -->
+<script src="js/game.js"></script>
+
+</body>
+</html>
