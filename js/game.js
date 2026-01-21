@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // ===== 背景（高さ依存 + グラデーション）=====
-    const maxHeight = 2000;
+    const maxHeight = 5000;
     const height = Math.max(0, GROUND_Y - player.y);
     const t = Math.min(1, height / maxHeight);
 
