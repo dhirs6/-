@@ -9,25 +9,26 @@ let accelZ = 0;
 let gyroView;
 
 // ===== 表示UIを作る =====
-document.addEventListener('DOMContentLoaded', () => {
-  gyroView = document.createElement('div');
-  gyroView.style.position = 'absolute';
-  gyroView.style.top = '80px';
-  gyroView.style.left = '10px';
-  gyroView.style.padding = '8px 12px';
-  gyroView.style.background = 'rgba(0,0,0,0.6)';
-  gyroView.style.color = '#fff';
-  gyroView.style.fontSize = '14px';
-  gyroView.style.borderRadius = '8px';
-  gyroView.style.zIndex = '9999';
-  gyroView.innerText = 'Gyro: not started';
+// document.addEventListener('DOMContentLoaded', () => {
+//   gyroView = document.createElement('div');
+//   gyroView.style.position = 'absolute';
+//   gyroView.style.top = '80px';
+//   gyroView.style.left = '10px';
+//   gyroView.style.padding = '8px 12px';
+//   gyroView.style.background = 'rgba(0,0,0,0.6)';
+//   gyroView.style.color = '#fff';
+//   gyroView.style.fontSize = '14px';
+//   gyroView.style.borderRadius = '8px';
+//   gyroView.style.zIndex = '9999';
+//   gyroView.innerText = 'Gyro: not started';
 
-  document.body.appendChild(gyroView);
+//   document.body.appendChild(gyroView);
 
-  // ユーザー操作必須（iOS）
-  document.body.addEventListener('click', requestGyroPermission, { once: true });
-});
+//   // ユーザー操作必須（iOS）
+  
+// });
 
+document.body.addEventListener('DOMContentLoaded', requestGyroPermission, { once: true });
 // ===== iOS 権限要求 =====
 async function requestGyroPermission() {
   if (
