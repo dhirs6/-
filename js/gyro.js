@@ -71,4 +71,6 @@ function onDeviceMotion(e) {
   // 左右傾き
   window.onGyroAction('left',  accelX < -TH);
   window.onGyroAction('right', accelX >  TH);
+
+  window.onGyroAction('jump' , accelZ < -7);
 }
