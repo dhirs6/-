@@ -43,13 +43,9 @@ function onInputReport(event) {
 window.addEventListener("load", () => {
   console.log("Click anywhere to connect DualSense");
 
-  document.body.addEventListener(
-    "click",
-    async () => {
-      if (!dualSense) {
-        await connectDualSense();
-      }
-    },
-    { once: true }
-  );
+  document.body.addEventListener("click", async () => {
+    if (!dualSense) {
+      await connectDualSense();
+    }
+  }, { once: true });
 });
