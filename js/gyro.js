@@ -1,4 +1,4 @@
-// gyro.js
+// gyro.js（iOS最終対応版）
 
 let gyroEnabled = false;
 
@@ -10,14 +10,14 @@ function startGyro() {
   console.log("Gyro started");
 
   window.addEventListener("deviceorientation", e => {
-    const gamma = e.gamma || 0; // 左右（-90 ~ 90）
-    const beta  = e.beta  || 0; // 前後（-180 ~ 180）
+    const gamma = e.gamma || 0; // 左右
+    const beta  = e.beta  || 0; // 前後
 
-    // ===== 左右移動 =====
+    // 左右移動
     window.onGyroAction?.("left",  gamma < -10);
     window.onGyroAction?.("right", gamma > 10);
 
-    // ===== 奥に倒す → ジャンプ（連続OK）=====
+    // 奥に倒す → ジャンプ（連続OK）
     window.onGyroAction?.("jump", beta < -25);
   });
 }
@@ -25,31 +25,38 @@ function startGyro() {
 /* ===== 初期化 ===== */
 window.addEventListener("load", () => {
 
-  // iOS（許可が必要）
+  // iOS（許可必須）
   if (
     typeof DeviceOrientationEvent !== "undefined" &&
     typeof DeviceOrientationEvent.requestPermission === "function"
   ) {
-    // ★ touch.js に奪われないよう pointerdown を使う
-    document.body.addEventListener(
+
+    document.addEventListener(
       "pointerdown",
-      async () => {
+      async e => {
+        // ★ ここが最重要
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
         try {
           const res = await DeviceOrientationEvent.requestPermission();
+          console.log("Gyro permission:", res);
+
           if (res === "granted") {
             startGyro();
-          } else {
-            console.warn("Gyro permission denied");
           }
         } catch (err) {
           console.error("Gyro permission error", err);
         }
       },
-      { once: true }
+      {
+        once: true,
+        capture: true   // ★ touch.js より先に取る
+      }
     );
 
   } else {
-    // Android / その他（自動で使える）
+    // Android / その他
     startGyro();
   }
 });
