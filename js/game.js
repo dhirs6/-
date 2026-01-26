@@ -7,7 +7,8 @@ const input = {
   voice: { left: false, right: false },
   pose:  { left: false, right: false },
   pad:   { left: false, right: false },
-  gyro:  { left: false, right: false }
+  gyro:  { left: false, right: false },
+  touch: { left: false, right: false }
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -52,16 +53,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // ===== 入力統合 =====
   function isLeftAny() {
-    return keys.ArrowLeft || keys.KeyA ||
-           input.voice.left || input.pose.left ||
-           input.pad.left || input.gyro.left;
-  }
+  return keys.ArrowLeft || keys.KeyA ||
+         input.voice.left || input.pose.left ||
+         input.pad.left || input.gyro.left ||
+         input.touch.left;
+}
 
-  function isRightAny() {
-    return keys.ArrowRight || keys.KeyD ||
-           input.voice.right || input.pose.right ||
-           input.pad.right || input.gyro.right;
-  }
+function isRightAny() {
+  return keys.ArrowRight || keys.KeyD ||
+         input.voice.right || input.pose.right ||
+         input.pad.right || input.gyro.right ||
+         input.touch.right;
+}
+
 
   function isJumpAny() {
     return keys.Space;
@@ -127,7 +131,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // ===== 背景（高さ依存 + グラデーション）=====
-    const maxHeight = 5000;
+    const maxHeight = 2000;
     const height = Math.max(0, GROUND_Y - player.y);
     const t = Math.min(1, height / maxHeight);
 
@@ -214,6 +218,18 @@ window.onGyroAction = (a, p) => {
   if (!player) return;
   if (a === 'left')  input.gyro.left  = p;
   if (a === 'right') input.gyro.right = p;
+  if (a === 'jump' && p && player.grounded) {
+    player.vy = player.jump;
+    player.grounded = false;
+  }
+};
+
+window.onTouchAction = (a, p) => {
+  if (!player) return;
+
+  if (a === 'left')  input.touch.left  = p;
+  if (a === 'right') input.touch.right = p;
+
   if (a === 'jump' && p && player.grounded) {
     player.vy = player.jump;
     player.grounded = false;
