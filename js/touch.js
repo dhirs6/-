@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function bindHold(button, action) {
     const on = e => {
       e.preventDefault();
+      console.log("input key");
       window.onTouchAction?.(action, true);
     };
 
