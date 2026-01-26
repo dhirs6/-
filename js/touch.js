@@ -1,4 +1,7 @@
 // This is a JavaScript file
+window.addEventListener('touchstart', e => {
+  console.log('touchstart', e.touches.length);
+}, { passive: false });
 
 // touch.js
 (() => {
