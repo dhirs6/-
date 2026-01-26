@@ -26,7 +26,7 @@
       const y = t.clientY - rect.top;
 
       // canvas 外は無視
-      if (x < 0  y < 0  x > w || y > h) continue;
+      if (x < 0 || y < 0  x > w || y > h) continue;
 
       // 上 1/3 → ジャンプ
       if (y < h / 3) {
