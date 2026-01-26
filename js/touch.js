@@ -1,51 +1,39 @@
-// This is a JavaScript file
-window.addEventListener('touchstart', e => {
-  console.log('touchstart', e.touches.length);
-}, { passive: false });
+// js/touch_button.js
 
-// touch.js
-(() => {
-  let touchLeft  = false;
-  let touchRight = false;
+document.addEventListener('DOMContentLoaded', () => {
+  const btnLeft  = document.getElementById('touch_left');
+  const btnRight = document.getElementById('touch_right');
+  const btnJump  = document.getElementById('touch_jump');
 
-  function handleTouch(e) {
-    e.preventDefault();
+  if (!btnLeft  !btnRight 
+ !btnJump) return;
 
-    // 一旦すべて解除
-    touchLeft = false;
-    touchRight = false;
+  // ===== 共通ユーティリティ =====
+  function bindHold(button, action) {
+    const on = e => {
+      e.preventDefault();
+      window.onGyroAction(action, true);
+    };
 
-    const w = window.innerWidth;
-    const h = window.innerHeight;
+    const off = e => {
+      e.preventDefault();
+      window.onGyroAction(action, false);
+    };
 
-    for (const t of e.touches) {
-      const x = t.clientX;
-      const y = t.clientY;
+    button.addEventListener('touchstart', on, { passive: false });
+    button.addEventListener('touchend', off);
+    button.addEventListener('touchcancel', off);
 
-      // 上 1/3 → ジャンプ
-      if (y < h / 3) {
-        window.onTouchAction?.('jump', true);
-        continue;
-      }
-
-      // 下 2/3
-      if (x < w / 2) touchLeft = true;
-      else touchRight = true;
-    }
-
-    window.onTouchAction?.('left', touchLeft);
-    window.onTouchAction?.('right', touchRight);
+    // PCデバッグ用
+    button.addEventListener('mousedown', on);
+    button.addEventListener('mouseup', off);
+    button.addEventListener('mouseleave', off);
   }
 
-  function endTouch() {
-    touchLeft = false;
-    touchRight = false;
-    window.onTouchAction?.('left', false);
-    window.onTouchAction?.('right', false);
-  }
+  // ===== 左右移動（長押し）=====
+  bindHold(btnLeft,  'left');
+  bindHold(btnRight, 'right');
 
-  window.addEventListener('touchstart', handleTouch, { passive: false });
-  window.addEventListener('touchmove',  handleTouch, { passive: false });
-  window.addEventListener('touchend',   endTouch);
-  window.addEventListener('touchcancel', endTouch);
-})();
+  // ===== ジャンプ（長押しOK）=====
+  bindHold(btnJump, 'jump');
+});
