@@ -7,7 +7,8 @@ const input = {
   voice: { left: false, right: false },
   pose:  { left: false, right: false },
   pad:   { left: false, right: false },
-  gyro:  { left: false, right: false }
+  gyro:  { left: false, right: false },
+  touch: { left: false, right: false }
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -54,13 +55,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   function isLeftAny() {
     return keys.ArrowLeft || keys.KeyA ||
            input.voice.left || input.pose.left ||
-           input.pad.left || input.gyro.left;
+           input.pad.left || input.gyro.left ||
+           input.touch.left;
   }
 
   function isRightAny() {
     return keys.ArrowRight || keys.KeyD ||
            input.voice.right || input.pose.right ||
-           input.pad.right || input.gyro.right;
+           input.pad.right || input.gyro.right ||
+           input.touch.right;
   }
 
   function isJumpAny() {
