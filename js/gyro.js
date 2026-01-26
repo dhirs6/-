@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.appendChild(gyroView);
 
   // ユーザー操作必須（iOS）
-  document.body.addEventListener('click', requestGyroPermission, { once: true });
+  document.getElementById('gyro').addEventListener('click', requestGyroPermission, { once: true });
 });
 
 // ===== iOS 権限要求 =====
