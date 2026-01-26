@@ -1,62 +1,55 @@
-// gyro.js（iOS最終対応版）
+let dualSense = null;
 
-let gyroEnabled = false;
+/* DualSense 接続 */
+async function connectDualSense() {
+  if (!("hid" in navigator)) {
+    console.error("WebHID is not supported");
+    return;
+  }
 
-/* ===== ジャイロ開始 ===== */
-function startGyro() {
-  if (gyroEnabled) return;
-  gyroEnabled = true;
-
-  console.log("Gyro started");
-
-  window.addEventListener("deviceorientation", e => {
-    const gamma = e.gamma || 0; // 左右
-    const beta  = e.beta  || 0; // 前後
-
-    // 左右移動
-    window.onGyroAction?.("left",  gamma < -10);
-    window.onGyroAction?.("right", gamma > 10);
-
-    // 奥に倒す → ジャンプ（連続OK）
-    window.onGyroAction?.("jump", beta < -25);
+  const devices = await navigator.hid.requestDevice({
+    filters: [{ vendorId: 0x054C }]
   });
+
+  if (devices.length === 0) {
+    console.warn("DualSense not found");
+    return;
+  }
+
+  dualSense = devices[0];
+  await dualSense.open();
+
+  console.log("DualSense connected");
+
+  dualSense.addEventListener("inputreport", onInputReport);
 }
 
-/* ===== 初期化 ===== */
+/* 入力レポート受信 */
+function onInputReport(event) {
+  const data = event.data;
+
+  const accelX = data.getInt16(14, true);
+  const accelY = data.getInt16(16, true);
+  const accelZ = data.getInt16(18, true);
+
+  console.clear();
+  console.log("Acceleration (raw)");
+  console.log("X:", accelX);
+  console.log("Y:", accelY);
+  console.log("Z:", accelZ);
+}
+
+/* ページ読み込み後にボタン1つで開始できるようにする */
 window.addEventListener("load", () => {
+  console.log("Click anywhere to connect DualSense");
 
-  // iOS（許可必須）
-  if (
-    typeof DeviceOrientationEvent !== "undefined" &&
-    typeof DeviceOrientationEvent.requestPermission === "function"
-  ) {
-
-    document.addEventListener(
-      "pointerdown",
-      async e => {
-        // ★ ここが最重要
-        e.preventDefault();
-        e.stopImmediatePropagation();
-
-        try {
-          const res = await DeviceOrientationEvent.requestPermission();
-          console.log("Gyro permission:", res);
-
-          if (res === "granted") {
-            startGyro();
-          }
-        } catch (err) {
-          console.error("Gyro permission error", err);
-        }
-      },
-      {
-        once: true,
-        capture: true   // ★ touch.js より先に取る
+  document.body.addEventListener(
+    "click",
+    async () => {
+      if (!dualSense) {
+        await connectDualSense();
       }
-    );
-
-  } else {
-    // Android / その他
-    startGyro();
-  }
+    },
+    { once: true }
+  );
 });
