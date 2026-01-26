@@ -1,39 +1,40 @@
-// js/touch_button.js
+// js/touch.js
 
 document.addEventListener('DOMContentLoaded', () => {
   const btnLeft  = document.getElementById('touch_left');
   const btnRight = document.getElementById('touch_right');
   const btnJump  = document.getElementById('touch_jump');
 
-  if (!btnLeft  !btnRight 
- !btnJump) return;
+  if (!btnLeft  !btnRight  !btnJump) {
+    console.warn('Touch buttons not found');
+    return;
+  }
 
-  // ===== 共通ユーティリティ =====
+  // ===== 共通：長押し処理 =====
   function bindHold(button, action) {
     const on = e => {
       e.preventDefault();
-      window.onGyroAction(action, true);
+      window.onTouchAction?.(action, true);
     };
 
     const off = e => {
       e.preventDefault();
-      window.onGyroAction(action, false);
+      window.onTouchAction?.(action, false);
     };
 
+    // タッチ
     button.addEventListener('touchstart', on, { passive: false });
     button.addEventListener('touchend', off);
     button.addEventListener('touchcancel', off);
 
-    // PCデバッグ用
+    // マウス（PCデバッグ用）
     button.addEventListener('mousedown', on);
     button.addEventListener('mouseup', off);
     button.addEventListener('mouseleave', off);
   }
 
-  // ===== 左右移動（長押し）=====
+  // ===== 割り当て =====
   bindHold(btnLeft,  'left');
   bindHold(btnRight, 'right');
-
-  // ===== ジャンプ（長押しOK）=====
-  bindHold(btnJump, 'jump');
+  bindHold(btnJump,  'jump');
 });
