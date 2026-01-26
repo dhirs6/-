@@ -225,8 +225,10 @@ window.onGyroAction = (a, p) => {
 
 window.onTouchAction = (a, p) => {
   if (!player) return;
-  if (a === 'left')  input.gyro.left  = p;
-  if (a === 'right') input.gyro.right = p;
+
+  if (a === 'left')  input.touch.left  = p;
+  if (a === 'right') input.touch.right = p;
+
   if (a === 'jump' && p && player.grounded) {
     player.vy = player.jump;
     player.grounded = false;
