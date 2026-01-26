@@ -72,5 +72,5 @@ function onDeviceMotion(e) {
   window.onGyroAction('left',  accelX < -TH);
   window.onGyroAction('right', accelX >  TH);
 
-  window.onGyroAction('jump', accelY < -7);
+  window.onGyroAction('jump', accelZ < -7);
 }
